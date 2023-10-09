@@ -1,99 +1,201 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(PaginaDeLogin());
+  runApp(MinhaApp());
 }
 
-class PaginaDeLogin extends StatefulWidget {
-  @override
-  _EstadoPaginaDeLogin createState() => _EstadoPaginaDeLogin();
+class Projeto {
+  final String nome;
+  final String descricao;
+
+  Projeto(this.nome, this.descricao);
 }
 
-class _EstadoPaginaDeLogin extends State<PaginaDeLogin> {
-  final TextEditingController loginController = TextEditingController();
-  final TextEditingController senhaController = TextEditingController();
-  bool _senhaVisivel = false;
-
-  void processarLogin() {
-    String login = loginController.text;
-    String senha = senhaController.text;
-    // Faça o processamento do login aqui
-  }
-
+class MinhaApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.blue,
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                margin: EdgeInsets.only(bottom: 100.0, top: 30.0),
-                child: Image.asset(
-                  'assets/logo.png',
-                  width: 100.0,
-                  height: 100.0,
+      home: OrganizacaoPage(),
+    );
+  }
+}
+
+class OrganizacaoPage extends StatelessWidget {
+  final List<Projeto> projetos = [
+    Projeto("Projeto 1", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."),
+    Projeto("Projeto 2", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."),
+    Projeto("Projeto 3", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Expanded(
+              child: Center(
+                child: Text(
+                  "Organização Nome",
+                  style: TextStyle(fontSize: 20),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30.0),
-                child: SizedBox(
-                  width: 300.0,
-                  child: TextFormField(
-                    key: Key('loginField'),
-                    controller: loginController,
-                    decoration: InputDecoration(
-                      labelText: 'Login',
+            ),
+            PopupMenuButton(
+              itemBuilder: (BuildContext context) {
+                return [
+                  PopupMenuItem(
+                    child: Row(
+                      children: [
+                        Icon(Icons.person, color: Colors.blue),
+                        SizedBox(width: 8),
+                        Text("Perfil", style: TextStyle(color: Colors.blue)),
+                      ],
                     ),
+                    value: "perfil",
                   ),
-                ),
-              ),
-              SizedBox(height: 20.0),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30.0),
-                child: SizedBox(
-                  width: 300.0,
-                  child: TextFormField(
-                    key: Key('senhaField'),
-                    controller: senhaController,
-                    decoration: InputDecoration(
-                      labelText: 'Senha',
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _senhaVisivel
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _senhaVisivel = !_senhaVisivel;
-                          });
-                        },
+                  PopupMenuItem(
+                    child: Row(
+                      children: [
+                        Icon(Icons.exit_to_app, color: Colors.red),
+                        SizedBox(width: 8),
+                        Text("Sair", style: TextStyle(color: Colors.red)),
+                      ],
+                    ),
+                    value: "sair",
+                  ),
+                ];
+              },
+              onSelected: (value) {
+                if (value == "perfil") {
+                  // Ação para abrir o perfil
+                } else if (value == "sair") {
+                  // Ação para sair
+                }
+              },
+            ),
+          ],
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            
+            SizedBox(height: 20),
+            Text(
+              "Nome da Organização",
+              style: TextStyle(fontSize: 24),
+            ),
+            SizedBox(height: 20),
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Container(
+                      width: 200, // Ajuste a largura aqui conforme desejado
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: Colors.grey[200],
+                      ),
+                      child: Row(
+                        children: <Widget>[
+                          Icon(Icons.search),
+                          SizedBox(width: 10),
+                          Expanded(
+                            child: TextField(
+                              decoration: InputDecoration(
+                                hintText: "Pesquisar...",
+                                border: InputBorder.none,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    obscureText: !_senhaVisivel,
                   ),
-                ),
+                ],
               ),
-              SizedBox(height: 20.0),
-              ElevatedButton(
-                onPressed: processarLogin,
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.blue,
-                ),
-                child: Text(
-                  'Entrar',
-                  style: TextStyle(
-                    color: Colors.white,
+            ),
+            SizedBox(height: 20),
+            Column(
+              children: projetos.map((projeto) {
+                return Container(
+                  // Latgura do card
+                  width: 900,
+                  child: Card(
+                    elevation: 4,
+                    margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            projeto.nome,
+                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 8),
+                          Text(projeto.descricao),
+                          SizedBox(height: 16),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => DetalhesProjetoPage(projeto),
+                                    ),
+                                  );
+                                },
+                                child: Text("Ver mais"),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ],
-          ),
+                );
+              }).toList(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class DetalhesProjetoPage extends StatelessWidget {
+  final Projeto projeto;
+
+  DetalhesProjetoPage(this.projeto);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Detalhes do Projeto"),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              "Nome do Projeto: ${projeto.nome}",
+              style: TextStyle(fontSize: 20),
+            ),
+            SizedBox(height: 16),
+            Text(
+              "Descrição: ${projeto.descricao}",
+              style: TextStyle(fontSize: 16),
+            ),
+          ],
         ),
       ),
     );
